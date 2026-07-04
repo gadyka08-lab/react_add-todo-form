@@ -1,11 +1,11 @@
 import React from 'react';
 // Імпортуємо тип Todo з відповідного файлу для типізації пропсів
-import { Todo } from '../../api/todos';
+import { Todo } from '../../types/todos';
 import { UserInfo } from '../UserInfo';
 
 /**
  * Компонент TodoInfo відображає детальну інформацію про конкретне завдання.
- * @param todo - об'єкт завдання, який містить id, title, description та completed status.
+ * @param todo - об'єкт завдання, який містить id, title, userId, completed, user та completed status.
  */
 export const TodoInfo = ({ todo }: { todo: Todo }) => {
   return (
@@ -22,7 +22,6 @@ export const TodoInfo = ({ todo }: { todo: Todo }) => {
       <h3 className="TodoInfo__title">{todo.title}</h3>
 
       {/* Опис завдання */}
-      <p className="Componet__description">{todo.description}</p>
       {todo.user && <UserInfo user={todo.user} />}
     </div>
   );

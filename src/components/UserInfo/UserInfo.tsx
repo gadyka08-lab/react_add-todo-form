@@ -1,5 +1,5 @@
-// Імпортуємо тип User, який описує структуру даних користувача
-import { User } from '../../types/User';
+// Імпортуємо тип User із правильним розширенням файлу .ts
+import { User } from '../../types/user';
 
 // Визначаємо інтерфейс для пропсів компонента
 interface UserInfoProps {

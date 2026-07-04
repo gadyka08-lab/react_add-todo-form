@@ -7,13 +7,13 @@ import todosFromServer from './api/todos';
 import { useState } from 'react';
 // Імпортуємо компонент списку завдань та тип даних Todo
 import { TodoList } from './components/TodoList';
+import { Todo } from './types/todos';
 
 export const App = () => {
   // --- СТАН И КОМПОНЕНТА (STATES) ---
 
   // Зберігаємо масив користувачів та список усіх завдань
   const [users] = useState(usersFromServer);
-  const [todos, setTodos] = useState(todosFromServer);
 
   // Зберігаємо поточне значення текстового інпуту (назва завдання)
   const [title, setTitle] = useState('');
@@ -23,6 +23,20 @@ export const App = () => {
   // Прапорці для відображення помилок валідації форми
   const [titleError, setTitleError] = useState(false);
   const [userError, setUserError] = useState(false);
+  // Явно вказуємо дженерик <Todo[]> для useState, щоб зафіксувати правильний тип даних
+  const [todos, setTodos] = useState<Todo[]>(
+    // Перебираємо серверні завдання і додаємо до кожного об'єкт користувача
+    todosFromServer.map(todo => ({
+      ...todo,
+      // Шукаємо користувача, а якщо не знайшли — додаємо дефолтний об'єкт
+      user: usersFromServer.find(user => user.id === todo.userId) || {
+        id: 0,
+        name: '',
+        username: '',
+        email: '',
+      },
+    })),
+  );
 
   // --- ОБРОБНИК ВІДПРАВКИ ФОРМИ ---
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +66,11 @@ export const App = () => {
 
       // 2. Знаходимо повний об'єкт користувача з масиву users за його ID, який обрав автор
       const foundUser = users.find(user => user.id === userId);
+      // Захисна перевірка: якщо користувача раптом не знайдено, перериваємо виконання
+
+      if (!foundUser) {
+        return;
+      }
 
       // 3. Формуємо новий об'єкт завдання відповідно до структури типу Todo
       const newTodo = {

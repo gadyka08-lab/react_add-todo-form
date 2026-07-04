@@ -1,7 +1,7 @@
 // Імпортуємо потрібний компонент для відображення одного завдання
 import { TodoInfo } from '../TodoInfo';
 // Імпортуємо тип для Todo, якщо він є (наприклад, з api)
-import { Todo } from '../../api/todos';
+import { Todo } from '../../types/todos';
 
 // Описуємо, які пропси очікує наш компонент TodoList
 interface Props {
